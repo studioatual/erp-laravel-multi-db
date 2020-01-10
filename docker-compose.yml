@@ -1,0 +1,78 @@
+version: "3.4"
+services:
+  php:
+    build: .docker
+    image: apache
+    container_name: apache
+    restart: always
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 80:80
+    links:
+      - mysql
+      - postgres
+      - oracle
+      - sqlsrv
+    networks:
+      - mynetwork
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    volumes:
+      - .db/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - mynetwork
+
+  postgres:
+    image: postgres:10.11
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - .db/postgres:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - mynetwork
+
+  oracle:
+    image: oracleinanutshell/oracle-xe-11g
+    container_name: oracle
+    restart: always
+    ports:
+      - 1521:1521
+    networks:
+      - mynetwork
+
+  sqlsrv:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: sqlsrv
+    restart: always
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "AbcD312478*"
+    networks:
+      - mynetwork
+
+#volumes:
+#  php-data:
+#    driver: lebokus/bindfs:latest
+#    driver_opts:
+#      sourcePath: "${PWD}/backend"
+#      map: "${UID}/0:@${UID}/@0"
+
+networks:
+  mynetwork:
+    driver: bridge
