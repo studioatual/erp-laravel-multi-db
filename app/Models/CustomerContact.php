@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CompanyContact extends Model
+class CustomerContact extends Model
 {
-    protected $table = "companies_contacts";
+    protected $table = "customers_contacts";
     protected $fillable = [
-        'company_id',
+        'customer_id',
         'zipcode',
         'address',
         'number',
@@ -19,8 +19,8 @@ class CompanyContact extends Model
         'cell'
     ];
 
-    public function company()
+    public function customer()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Customer::class);
     }
 }
