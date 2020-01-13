@@ -6,7 +6,7 @@ services:
     container_name: apache
     restart: always
     volumes:
-      - .:/var/www/html
+      - php-data:/var/www/html
     ports:
       - 80:80
     links:
@@ -66,12 +66,12 @@ services:
     networks:
       - mynetwork
 
-#volumes:
-#  php-data:
-#    driver: lebokus/bindfs:latest
-#    driver_opts:
-#      sourcePath: "${PWD}/backend"
-#      map: "${UID}/0:@${UID}/@0"
+volumes:
+  php-data:
+    driver: lebokus/bindfs:latest
+    driver_opts:
+      sourcePath: "${PWD}"
+      map: "${UID}/0:@${UID}/@0"
 
 networks:
   mynetwork:
